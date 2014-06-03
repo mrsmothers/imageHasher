@@ -5,18 +5,20 @@ import javax.imageio.*;
 
 class imageHasher{ 
 
-  public static Image img;
+  public static Image img, possesedImg;
   public static void main(String[] args){
   
-  openFile();
+  openImageFile(args[0]);
+  prossesImage(img);
+  
   //preprosess image:generate intensity map
   //apply gassian hash
   //output hash
   }
 
-  public static void openFile(){
+  public static void openImageFile(String fileName){
        try {
-           img = ImageIO.read(new File(args[0]));
+           img = ImageIO.read(new File(fileName));
        } catch (IOException e) { }
        
   }
@@ -26,8 +28,7 @@ class imageHasher{
 }
 
 public class imageHash{
-  private static int LAYERS = 1;
-  public double[LAYERS][] members;
+  public double[] map;
   
   
   public static imageHash hash(Image image){
