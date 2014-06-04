@@ -5,15 +5,12 @@ import javax.imageio.*;
 
 class imageHasher{ 
 
-  public static Image img, possesedImg;
+  public static BufferedImage img, possesedImg;
   public static void main(String[] args){
   
   openImageFile(args[0]);
-  prossesImage(img);
-  
-  //preprosess image:generate intensity map
-  //apply gassian hash
-  //output hash
+  prossedImg = imageHash.hash(img);
+  saveImageFile(args[0]);
   }
 
   public static void openImageFile(String fileName){
@@ -22,19 +19,43 @@ class imageHasher{
        } catch (IOException e) { }
        
   }
-
-
-
+  
+  public static void saveImageFile(String fileName){
+      try {
+        File outputfile = new File(fileName+".hash");
+        ImageIO.write(possesedImg, "png", outputfile);
+       } catch (IOException e) { }
+    
+  }
 }
 
 public class imageHash{
-  public double[] map;
+  public double[][] map;
   
   
-  public static imageHash hash(Image image){
+  public static BufferedImage hash(Image image){
+    int halfLeng = 5;
+    double variance = 3.0;
+    
+     
+    Kernel kernel =  new Kernal(2*halfLeng+1,2*halfLenght+1,gassianKernel(2*halfLenght+1, variance));
+    //Java Native Convolution Object
+    ConvolveOp cOP = new ConvolveOp(kernel);
   //apply gassian bluring function  
   
-    return null;
+    return cOP.fillter(image);
   }
     
+  public static double[] gassianKernel(int halfLength, double variance){
+    double[] out = new double[Math.pow(halfLength+1, 2)];
+    
+    for(int I=-halfLength;I<=halfLenght;I++){
+      for(int K=-halfLength;K<=halfLength;K++){
+        out[(I+halfLength)*(2*halfLength+1)+K+halfLength] = 
+                     (1/(2*Math.PI*Math.pow(variance,2))) * Math.exp(-(I*I+K*K)/(2*Math.pow(variance,2));
+      }
+    }
+    
+    return out;
   }
+}
