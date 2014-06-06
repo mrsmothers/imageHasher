@@ -2,7 +2,6 @@ import java.awt.Image;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
-import java.awt.image.Kernel;
 import java.util.Arrays;
 
 public class imageHasher{ 
@@ -40,7 +39,7 @@ class imageHash{
     double variance = 3.0;
     
      
-    Kernel kernel =  new Kernel(2*halfLeng+1,2*halfLeng+1,gassianKernel(halfLeng, variance));
+    Kernel kernel =  new Kernel(2*halfLeng+1, 2*halfLeng+1, gassianKernel(halfLeng, variance));
     //Java Native Convolution Object
     ConvolveOp cOP = new ConvolveOp(kernel);
   //apply gassian bluring function  
@@ -52,10 +51,10 @@ class imageHash{
     int length = (int)Math.pow(2*halfLength+1, 2);
     float[] out = new float[length];
     
-    for(int I=-halfLength;I<=halfLength;I++){
-      for(int K=-halfLength;K<=halfLength;K++){
+    for(int I=-halfLength; I<=halfLength; I++){
+      for(int K=-halfLength; K<=halfLength; K++){
         out[(I+halfLength)*(2*halfLength+1)+K+halfLength] = 
-                      ((float)(1/(2*Math.PI*Math.pow(variance,2)))) *((float) Math.exp(-(I*I+K*K)/(2*Math.pow(variance,2))));
+                      ((float)(1/(2*Math.PI*Math.pow(variance, 2)))) *((float) Math.exp(-(I*I+K*K)/(2*Math.pow(variance, 2))));
       }
     }
 
