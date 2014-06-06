@@ -14,25 +14,27 @@ public class intesityMap{
   public static void main(String[] args){
   
     openImageFile(args[0]);
-    possesedImg = imageHash.hash(img);
+    possesedImg = converter(img);
     saveImageFile(args[1]);
     
     System.exit(0);
   }
   
   public static BufferedImage converter(BufferedImage img){
-    for(int I = 0;img.getWidth(); I++){
+    
+    BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight());
+    
+    for(int I = 0; img.getWidth(); I++){
       for(int J = 0; img.getHeight(); J++){
         Vector3d v = quantizePixle(img, I, J);
+        double tmp = v.length() / (Math.pow(3, 0.5)*256);
         
-        double tmp = v.length() / Math.pow(3,.5);
-        
-        v.length
-        
+        Color nuColor = new Color(tmp, tmp, tmp);
+        out.setRGB(I, J, nuColor.getRGB());
       }
     }
     
-    return null;
+    return out;
   }
 
   public static void openImageFile(String fileName){
@@ -60,5 +62,3 @@ public class intesityMap{
     return out;
   }
 }
-  
-  
