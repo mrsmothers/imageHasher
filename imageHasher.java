@@ -10,7 +10,7 @@ public class imageHasher{
   
   openImageFile(args[0]);
   possesedImg = imageHash.hash(img);
-  saveImageFile(args[0]);
+  saveImageFile(args[1]);
   }
 
   public static void openImageFile(String fileName){
