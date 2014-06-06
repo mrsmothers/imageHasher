@@ -31,24 +31,19 @@ public class imageHasher{
 }
 
 class imageHash{
-  public double[][] map;
   
-  //applay an 2-D gassian blur to an image
+  
   public static BufferedImage hash(BufferedImage image){
-    
-    
     int halfLeng = 9;
     double variance = 3.0;
     
-    float[] map = gassianKernel(halfLeng, variance)
-    
-    //2-D convlution map 
-    Kernel kernel =  new Kernel(2*halfLeng+1, 2*halfLeng+1, map);
+     
+    Kernel kernel =  new Kernel(2*halfLeng+1, 2*halfLeng+1, gassianKernel(halfLeng, variance));
     //Java Native Convolution Object
-    ConvolveOp cop = new ConvolveOp(kernel);
+    ConvolveOp cOP = new ConvolveOp(kernel);
   //apply gassian bluring function  
   
-    return cop.filter(image,null);
+    return cOP.filter(image,null);
   }
     
   public static float[] gassianKernel(int halfLength, double variance){
