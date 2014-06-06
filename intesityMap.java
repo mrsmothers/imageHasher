@@ -5,60 +5,60 @@ import java.awt.Image;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
+import javax.vecmath.Vector3d;
 
-public class imageHasher{ 
+public class intesityMap{ 
 
   public static BufferedImage img, possesedImg;
   
   public static void main(String[] args){
   
-  openImageFile(args[0]);
-  possesedImg = imageHash.hash(img);
-  saveImageFile(args[1]);
+    openImageFile(args[0]);
+    possesedImg = imageHash.hash(img);
+    saveImageFile(args[1]);
+    
+    System.exit(0);
+  }
+  
+  public static BufferedImage converter(BufferedImage img){
+    for(int I = 0;img.getWidth(); I++){
+      for(int J = 0; img.getHeight(); J++){
+        Vector3d v = quantizePixle(img, I, J);
+        
+        double tmp = v.length() / Math.pow(3,.5);
+        
+        v.length
+        
+      }
+    }
+    
+    return null;
   }
 
   public static void openImageFile(String fileName){
        try {
-           img = ImageIO.read(new File(fileName));
+         img = ImageIO.read(new File(fileName));
        } catch (IOException e) { }
        
   }
   
   public static void saveImageFile(String fileName){
       try {
-        File outputfile = new File(fileName+".hash");
+        File outputfile = new File(fileName);
         ImageIO.write(possesedImg, "png", outputfile);
        } catch (IOException e) { }
-    
   }
-}
   
-  
-  public static BufferedImage hash(BufferedImage image){
-    int halfLeng = 9;
-    double variance = 3.0;
+  public static Vector3d quantizePixle(BufferedImage img, int x, int y){
+    int clr   =  img.getRGB(x, y); 
+    int red   = (clr & 0x00ff0000) >> 16;
+    int green = (clr & 0x0000ff00) >> 8;
+    int blue  =  clr & 0x000000ff;
     
-     
-    Kernel kernel =  new Kernel(2*halfLeng+1, 2*halfLeng+1, gassianKernel(halfLeng, variance));
-    //Java Native Convolution Object
+    Vector3d out = new Vector3d(red, green, blue);
     
-    ConvolveOp cop = new ConvolveOp(kernel);
-    
-    //apply blur  
-    return cop.filter(image,null);
-  }
-    
-  public static float[] gassianKernel(int halfLength, double variance){
-    int length = (int)Math.pow(2*halfLength+1, 2);
-    float[] out = new float[length];
-    
-    for(int I=-halfLength; I<=halfLength; I++){
-      for(int K=-halfLength; K<=halfLength; K++){
-        out[(I+halfLength)*(2*halfLength+1)+K+halfLength] = 
-                      ((float)(1/(2*Math.PI*Math.pow(variance, 2)))) * ((float) Math.exp(-(I*I+K*K)/(2*Math.pow(variance, 2))));
-      }
-    }
-
     return out;
   }
 }
+  
+  
