@@ -26,7 +26,7 @@ public class imageHasher{
   
   public static void saveImageFile(String fileName){
       try {
-        File outputfile = new File(fileName+".hash");
+        File outputfile = new File(fileName);
         ImageIO.write(possesedImg, "png", outputfile);
        } catch (IOException e) { }
     
@@ -42,8 +42,7 @@ class imageHash{
     
      
     Kernel kernel =  new Kernel(2*halfLeng+1, 2*halfLeng+1, gassianKernel(halfLeng, variance));
-    //Java Native Convolution Object
-    
+
     ConvolveOp cop = new ConvolveOp(kernel);
     
     //apply blur  
