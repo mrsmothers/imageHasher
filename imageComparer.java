@@ -7,25 +7,27 @@ import javax.vecmath.Vector3d;
 class imageComparer {
   public static void main(String[] args){
   
-  System.out.println(comparer(args[0],args[1]);
+    System.out.println(comparer(args[0], args[1]);
   
   }
   
   public static double comparer(BufferedImage img1, BufferedImage img2){
     double sum=0;
     
-    for(int I = 0;I<img1.getHeight(); I++){
-      for(int J = 0; J<img1.getWidth(); J++){
-        Vector3d v1,v2;
-        v1 = quantizePixle(img1,I,J);
-        v2 = quantizePixle(img2,I,J);
+    for(int I = 0; I < img1.getHeight(); I++){
+      for(int J = 0; J < img1.getWidth(); J++){
+        Vector3d v1, v2;
+        
+        v1 = quantizePixle(img1, I, J);
+        v2 = quantizePixle(img2, I, J);
         
         v1.sub(v2);
-        sum+=v1.length();
+        
+        sum += v1.length();
       }
     }
 
-    return sum/(img1.getWidth()*img2.getHeight()*256);
+    return sum / ( img1.getWidth() * img2.getHeight() * 25 6);
   }
 
 
@@ -37,7 +39,7 @@ class imageComparer {
   }
   
   public static double[] quantizePixle(BufferedImage img, int x, int y){
-        int clr=  img.getRGB(x, y); 
+    int clr=  img.getRGB(x, y); 
     int  red   = (clr & 0x00ff0000) >> 16;
     int  green = (clr & 0x0000ff00) >> 8;
     int  blue  =  clr & 0x000000ff;
