@@ -36,7 +36,7 @@ class imageComparer {
        } catch (IOException e) { }
   }
   
-  public static double[] quantizePixle(BufferedImage img, int x, int y){
+  public static Vector3d quantizePixle(BufferedImage img, int x, int y){
     int clr   =  img.getRGB(x, y); 
     int red   = (clr & 0x00ff0000) >> 16;
     int green = (clr & 0x0000ff00) >> 8;
