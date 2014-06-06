@@ -12,7 +12,6 @@ public class intesityMap{
   public static BufferedImage img, possesedImg;
   
   public static void main(String[] args){
-  
     openImageFile(args[0]);
     possesedImg = converter(img);
     saveImageFile(args[1]);
@@ -21,7 +20,6 @@ public class intesityMap{
   }
   
   public static BufferedImage converter(BufferedImage img){
-    
     BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight());
     
     for(int I = 0; img.getWidth(); I++){
