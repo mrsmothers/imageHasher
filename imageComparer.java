@@ -22,7 +22,7 @@ class imageComparer {
         
         v1.sub(v2);
         
-        sum += v1.length();
+        sum += Math.abs(v1.length());
       }
     }
 
