@@ -2,7 +2,6 @@ import java.awt.Image;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
-import java.util.Arrays;
 
 public class imageHasher{ 
 
