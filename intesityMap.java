@@ -8,10 +8,10 @@ import javax.imageio.*;
 import javax.vecmath.Vector3d;
 
 public class intesityMap{ 
-
-  public static BufferedImage img, possesedImg;
   
   public static void main(String[] args){
+    BufferedImage img, possesedImg;
+    
     openImageFile(args[0]);
     possesedImg = converter(img);
     saveImageFile(args[1]);
