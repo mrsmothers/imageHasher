@@ -13,7 +13,7 @@ public class imageHasher{
   saveImageFile(args[1]);
   }
 
-  public static void openImageFile(String fileName){
+  public static BufferedImage openImageFile(String fileName){
        try {
            img = ImageIO.read(new File(fileName));
        } catch (IOException e) { }
@@ -33,26 +33,26 @@ class imageHash{
   
   
   public static BufferedImage hash(BufferedImage image){
-    int halfLeng = 9;
+    int halfLength = 9;
     double variance = 3.0;
     
      
-    Kernel kernel =  new Kernel(2*halfLeng+1, 2*halfLeng+1, gassianKernel(halfLeng, variance));
+    Kernel kernel =  new Kernel(2*halfLength + 1, 2*halfLength + 1, gassianKernel(halfLength, variance));
     //Java Native Convolution Object
     ConvolveOp cOP = new ConvolveOp(kernel);
   //apply gassian bluring function  
   
-    return cOP.filter(image,null);
+    return cOP.filter(image, null);
   }
     
   public static float[] gassianKernel(int halfLength, double variance){
-    int length = (int)Math.pow(2*halfLength+1, 2);
+    int length = (int)Math.pow(2*halfLength + 1, 2);
     float[] out = new float[length];
     
-    for(int I=-halfLength; I<=halfLength; I++){
-      for(int K=-halfLength; K<=halfLength; K++){
-        out[(I+halfLength)*(2*halfLength+1)+K+halfLength] = 
-                      ((float)(1/(2*Math.PI*Math.pow(variance, 2)))) *((float) Math.exp(-(I*I+K*K)/(2*Math.pow(variance, 2))));
+    for(int I = -halfLength; I<=halfLength; I++){
+      for(int K = -halfLength; K<=halfLength; K++){
+        out[(I + halfLength)*(2*halfLength + 1) + K + halfLength] = 
+                      ((float)(1/(2*Math.PI*Math.pow(variance, 2)))) *((float) Math.exp(-(I*I + K*K)/(2*Math.pow(variance, 2))));
       }
     }
 
