@@ -5,7 +5,6 @@ import java.awt.Image;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
-import javax.vecmath.Vector3d;
 
 public class intesityMap{ 
   
