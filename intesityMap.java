@@ -24,8 +24,8 @@ public class intesityMap{
     
     for(int I = 0; img.getWidth(); I++){
       for(int J = 0; img.getHeight(); J++){
-        Vector3d v = quantizePixle(img, I, J);
-        double tmp = v.length() / (Math.pow(3, 0.5)*256);
+        float[] v = quantizePixle(img, I, J);
+        double tmp = vLength(v) / (Math.pow(3, 0.5)*256);
         
         Color nuColor = new Color(tmp, tmp, tmp);
         out.setRGB(I, J, nuColor.getRGB());
@@ -49,14 +49,41 @@ public class intesityMap{
        } catch (IOException e) { }
   }
   
-  public static Vector3d quantizePixle(BufferedImage img, int x, int y){
+  public static float[] quantizePixle(BufferedImage img, int x, int y){
     int clr   =  img.getRGB(x, y); 
     int red   = (clr & 0x00ff0000) >> 16;
     int green = (clr & 0x0000ff00) >> 8;
     int blue  =  clr & 0x000000ff;
     
-    Vector3d out = new Vector3d(red, green, blue);
+    float[]  out = {red, green, blue};
     
     return out;
+  }
+  
+  public static float vLength(float[] vector){
+    double sum = 0;
+    
+    for(int I=0; I<vector.length; I++)
+      sum += Math.pow(vector[I], 2);
+      
+    return Math.pow(sum, 0.5);
+  }
+  
+  public static float[] vMultiply(float[] vector, float val){
+    float[] out = new float[vector.length];
+    
+    for(int I=0; I<vector.length; I++)
+      out[I] = vector[I] * val;
+      
+    return out;
+  }
+  
+  public static float vDot(float[] arg1, float[] arg2){
+    double out=0;
+    
+    for(int I=0;I<arg1.length;I++)
+      out += arg1[I]*arg2[I]
+      
+    return (float) (out * ( 1 / ( vLength(arg1) * vLength(arg2) ) ));
   }
 }
