@@ -10,11 +10,11 @@ import javax.vecmath.Vector3d;
 public class intesityMap{ 
   
   public static void main(String[] args){
-    BufferedImage img, possesedImg;
+    BufferedImage img, prossesdImg;
     
-    openImageFile(args[0]);
-    possesedImg = converter(img);
-    saveImageFile(args[1]);
+    img = openImageFile(args[0]);
+    prossesdImg = converter(img);
+    saveImageFile(prossesdImg, args[1]);
     
     System.exit(0);
   }
@@ -35,17 +35,20 @@ public class intesityMap{
     return out;
   }
 
-  public static void openImageFile(String fileName){
-       try {
-         img = ImageIO.read(new File(fileName));
-       } catch (IOException e) { }
+  public static BufferedImage openImageFile(String fileName){
+    BufferedImage img;
+    
+    try {
+     img = ImageIO.read(new File(fileName));
+    } catch (IOException e) { }
        
+    return img;
   }
   
-  public static void saveImageFile(String fileName){
+  public static void saveImageFile(BUfferedImage img, String fileName){
       try {
         File outputfile = new File(fileName);
-        ImageIO.write(possesedImg, "png", outputfile);
+        ImageIO.write(img, "png", outputfile);
        } catch (IOException e) { }
   }
   
