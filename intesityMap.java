@@ -2,9 +2,12 @@
 //grayscale filter
 
 import java.awt.Image;
+import java.awt.Color;
+import java.awt.Transparency;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
+import java.util.Arrays;
 
 public class intesityMap{ 
   
@@ -13,21 +16,21 @@ public class intesityMap{
     
     img = openImageFile(args[0]);
     prossesdImg = converter(img);
-    saveImageFile(prossesdImg, args[1]);
+    saveImageFile(prossesdImg, args[0]+".intesity");
     
     System.exit(0);
   }
   
   public static BufferedImage converter(BufferedImage img){
-    BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight());
+    BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
     
-    for(int I = 0; img.getWidth(); I++){
-      for(int J = 0; img.getHeight(); J++){
-        float[] v = quantizePixle(img, I, J);
-        double tmp = vLength(v) / (Math.pow(3, 0.5)*256);
-        
+    for(int I = 0; I < img.getHeight(); I++){
+      for(int J = 0; J < img.getWidth(); J++){
+        float[] v = quantizePixle(img, J, I);
+        int tmp = (int)(vLength(v)/(Math.pow(3, 0.5)))+1;
+
         Color nuColor = new Color(tmp, tmp, tmp);
-        out.setRGB(I, J, nuColor.getRGB());
+        out.setRGB(J, I, nuColor.getRGB());
       }
     }
     
@@ -35,7 +38,7 @@ public class intesityMap{
   }
 
   public static BufferedImage openImageFile(String fileName){
-    BufferedImage img;
+    BufferedImage img = null;
     
     try {
      img = ImageIO.read(new File(fileName));
@@ -44,7 +47,7 @@ public class intesityMap{
     return img;
   }
   
-  public static void saveImageFile(BUfferedImage img, String fileName){
+  public static void saveImageFile(BufferedImage img, String fileName){
       try {
         File outputfile = new File(fileName);
         ImageIO.write(img, "png", outputfile);
@@ -68,7 +71,7 @@ public class intesityMap{
     for(int I=0; I<vector.length; I++)
       sum += Math.pow(vector[I], 2);
       
-    return Math.pow(sum, 0.5);
+    return (float)Math.pow(sum, 0.5);
   }
   
   public static float[] vMultiply(float[] vector, float val){
@@ -84,7 +87,7 @@ public class intesityMap{
     double out=0;
     
     for(int I=0;I<arg1.length;I++)
-      out += arg1[I]*arg2[I]
+      out += arg1[I]*arg2[I];
       
     return (float) (out * ( 1 / ( vLength(arg1) * vLength(arg2) ) ));
   }
