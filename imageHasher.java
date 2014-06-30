@@ -25,12 +25,10 @@ public class imageHasher{
   }
   
   public static void saveImageFile(BufferedImage img, String fileName){
-
       try {
        	File outputfile = new File(fileName);
 	       ImageIO.write(img, "png", outputfile);
        } catch (IOException e) { }
-    
   }
 }
 
