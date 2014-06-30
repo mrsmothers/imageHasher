@@ -25,7 +25,7 @@ class imageComparer {
       }
     }
 
-    return 1 - sum / ( img1.getWidth() * img2.getHeight() * 256);
+    return 1 - sum / ( ((img1.getWidth() < img2.getWidth()) ? img1.getWidth() : img2.getWidth()) * ((img1.getHeight() < img2.getHeight()) ? img1.getHeight() : img2.getHeight()) * 256);
   }
 
 
