@@ -11,7 +11,7 @@ public class imageHasher{
 
   img = openImageFile(args[0]);
   possesedImg = imageHash.hash(img);
-  saveImageFile(possesedImg, args[0]);
+  saveImageFile(possesedImg, args[0]+".hash");
   }
 
   public static BufferedImage openImageFile(String fileName){
@@ -27,7 +27,7 @@ public class imageHasher{
   public static void saveImageFile(BufferedImage img, String fileName){
 
       try {
-       	File outputfile = new File(fileName+".hash");
+       	File outputfile = new File(fileName);
 	       ImageIO.write(img, "png", outputfile);
        } catch (IOException e) { }
     
