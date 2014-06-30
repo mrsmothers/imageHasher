@@ -5,25 +5,30 @@ import javax.imageio.*;
 
 public class imageHasher{ 
 
-  public static BufferedImage img, possesedImg;
+ 
   public static void main(String[] args){
-  
-  openImageFile(args[0]);
+  BufferedImage img, possesedImg;
+
+  img = openImageFile(args[0]);
   possesedImg = imageHash.hash(img);
-  saveImageFile(args[1]);
+  saveImageFile(possesedImg, args[0]);
   }
 
   public static BufferedImage openImageFile(String fileName){
+       BufferedImage img = null;
        try {
            img = ImageIO.read(new File(fileName));
        } catch (IOException e) { }
+
+       return img;
        
   }
   
-  public static void saveImageFile(String fileName){
+  public static void saveImageFile(BufferedImage img, String fileName){
+
       try {
-        File outputfile = new File(fileName+".hash");
-        ImageIO.write(possesedImg, "png", outputfile);
+       	File outputfile = new File(fileName+".hash");
+	       ImageIO.write(img, "png", outputfile);
        } catch (IOException e) { }
     
   }
@@ -33,8 +38,8 @@ class imageHash{
   
   
   public static BufferedImage hash(BufferedImage image){
-    int halfLength = 9;
-    double variance = 3.0;
+    int halfLength = 14;
+    double variance = 4.0;
     
      
     Kernel kernel =  new Kernel(2*halfLength + 1, 2*halfLength + 1, gassianKernel(halfLength, variance));
