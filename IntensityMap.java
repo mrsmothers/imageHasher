@@ -9,25 +9,25 @@ import java.io.*;
 import javax.imageio.*;
 import java.util.Arrays;
 
-public class intesityMap{ 
+public class itensityMap{ 
   
   public static void main(String[] args){
     BufferedImage img, prossesdImg;
     
     img = openImageFile(args[0]);
-    prossesdImg = converter(img);
-    saveImageFile(prossesdImg, args[0]+".intesity");
+    prossesdImg = remap(img);
+    saveImageFile(prossesdImg, args[0]+".intensity");
     
     System.exit(0);
   }
   
-  public static BufferedImage converter(BufferedImage img){
+  public static BufferedImage remap(BufferedImage img){
     BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
     
     for(int I = 0; I < img.getHeight(); I++){
       for(int J = 0; J < img.getWidth(); J++){
-        float[] v = quantizePixle(img, J, I);
-        int tmp = (int)(vLength(v)/(Math.pow(3, 0.5)))+1;
+        int[] v = quantizePixle(img, J, I);
+        int tmp = (int)(vLength(v)/(Math.pow(3, 0.5)));
 
         Color nuColor = new Color(tmp, tmp, tmp);
         out.setRGB(J, I, nuColor.getRGB());
@@ -54,13 +54,13 @@ public class intesityMap{
        } catch (IOException e) { }
   }
   
-  public static float[] quantizePixle(BufferedImage img, int x, int y){
+  public static int[] quantizePixle(BufferedImage img, int x, int y){
     int clr   =  img.getRGB(x, y); 
     int red   = (clr & 0x00ff0000) >> 16;
     int green = (clr & 0x0000ff00) >> 8;
     int blue  =  clr & 0x000000ff;
     
-    float[]  out = {red, green, blue};
+    int[]  out = {red, green, blue};
     
     return out;
   }
