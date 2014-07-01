@@ -11,16 +11,6 @@ import java.util.Arrays;
 
 public class itensityMap{ 
   
-  public static void main(String[] args){
-    BufferedImage img, prossesdImg;
-    
-    img = openImageFile(args[0]);
-    prossesdImg = remap(img);
-    saveImageFile(prossesdImg, args[0]+".intensity");
-    
-    System.exit(0);
-  }
-  
   public static BufferedImage remap(BufferedImage img){
     BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
     
@@ -36,6 +26,16 @@ public class itensityMap{
     
     return out;
   }
+  
+  public static void main(String[] args){
+    BufferedImage img, prossesdImg;
+    
+    img = openImageFile(args[0]);
+    prossesdImg = remap(img);
+    saveImageFile(prossesdImg, args[0]+".intensity");
+    
+    System.exit(0);
+  }  
 
   public static BufferedImage openImageFile(String fileName){
     BufferedImage img = null;
