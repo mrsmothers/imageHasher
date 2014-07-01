@@ -10,7 +10,7 @@ public class imageHasher{
   public static void main(String[] args){
 
    BufferedImage img, possesedImg;
-   imageHasher hasher = new ImageHasher()
+   imageHasher hasher = new ImageHasher(14, 4.0);
 
  img = openImageFile(args[0]);
  possesedImg = imageHash.hash(img);
