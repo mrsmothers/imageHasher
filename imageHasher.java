@@ -4,52 +4,19 @@ import java.io.*;
 import javax.imageio.*;
 
 public class imageHasher{ 
-  public int halfLength = 14;
-  public double variance = 4.0;
- 
-  public static void main(String[] args){
+  public int halfLength;
+  public double variance;
 
-   BufferedImage img, possesedImg;
-   imageHasher hasher = new ImageHasher(14, 4.0);
-
- img = openImageFile(args[0]);
- possesedImg = imageHash.hash(img);
- saveImageFile(possesedImg, args[0]+".hash");
-  }
-  
   public imageHasher(int halfLength, double variance){
   	this.halfLength = halfLength;
   	this.variance = variance;
-  	
-  }
-
-  public static BufferedImage openImageFile(String fileName){
-       BufferedImage img = null;
-       try {
-           img = ImageIO.read(new File(fileName));
-       } catch (IOException e) { }
-
-       return img;
-       
   }
   
-  public static void saveImageFile(BufferedImage img, String fileName){
-      try {
-       	File outputfile = new File(fileName);
-	       ImageIO.write(img, "png", outputfile);
-       } catch (IOException e) { }
-  }
-
-  
-  public static BufferedImage hash(BufferedImage image){
-    int halfLength = 14;
-    double variance = 4.0;
-    
-     
-    Kernel kernel =  new Kernel(2*halfLength + 1, 2*halfLength + 1, gassianKernel(halfLength, variance));
+  public BufferedImage hash(BufferedImage image){
+    Kernel kernel =  new Kernel(2*halfLength + 1, 2*halfLength + 1, imageHasher.gassianKernel(this.halfLength, this.variance));
     //Java Native Convolution Object
     ConvolveOp cOP = new ConvolveOp(kernel);
-  //apply gassian bluring function  
+    //apply gassian bluring function  
   
     return cOP.filter(image, null);
   }
@@ -66,5 +33,34 @@ public class imageHasher{
     }
 
     return out;
+  }
+  
+  
+ 
+  public static void main(String[] args){
+    BufferedImage img, possesedImg;
+    imageHasher hasher = new ImageHasher(14, 4.0);
+
+    img = openImageFile(args[0]);
+    possesedImg = hasher.hash(img);
+    saveImageFile(possesedImg, args[0]+".hash");
+  }
+    
+  public static BufferedImage openImageFile(String fileName){
+       BufferedImage img = null;
+       
+       try {
+           img = ImageIO.read(new File(fileName));
+       } catch (IOException e) { }
+
+       return img;
+       
+  }
+  
+  public static void saveImageFile(BufferedImage img, String fileName){
+      try {
+       	File outputfile = new File(fileName);
+	       ImageIO.write(img, "png", outputfile);
+       } catch (IOException e) { }
   }
 }
