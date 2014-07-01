@@ -4,14 +4,23 @@ import java.io.*;
 import javax.imageio.*;
 
 public class imageHasher{ 
-
+  public int halfLength = 14;
+  public double variance = 4.0;
  
   public static void main(String[] args){
-   BufferedImage img, possesedImg;
 
-  img = openImageFile(args[0]);
-  possesedImg = imageHash.hash(img);
-  saveImageFile(possesedImg, args[0]+".hash");
+   BufferedImage img, possesedImg;
+   imageHasher hasher = new ImageHasher()
+
+ img = openImageFile(args[0]);
+ possesedImg = imageHash.hash(img);
+ saveImageFile(possesedImg, args[0]+".hash");
+  }
+  
+  public imageHasher(int halfLength, double variance){
+  	this.halfLength = halfLength;
+  	this.variance = variance;
+  	
   }
 
   public static BufferedImage openImageFile(String fileName){
@@ -30,10 +39,7 @@ public class imageHasher{
 	       ImageIO.write(img, "png", outputfile);
        } catch (IOException e) { }
   }
-}
 
-class imageHash{
-  
   
   public static BufferedImage hash(BufferedImage image){
     int halfLength = 14;
