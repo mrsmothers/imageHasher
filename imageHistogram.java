@@ -10,10 +10,10 @@ public class imageHistogram{
   
   public static void main(String[] args){
     Bufferedimage img = openImageFile(args[0]);
-    int work = imageHistogram.prosses(img);
+    int work[] = imageHistogram.prosses(img);
     
     for(int I=0; I<tmp.length; I++){
-      System.out.println(I+":"+tmp[I]);
+      System.out.println(I+":"+work[I]);
     }
   }
   
