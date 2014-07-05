@@ -85,20 +85,21 @@ public class imageHistogram{
   
      public String print(int width){
          StringBuilder out = new StringBuilder();
+         
+         //print first line of index
          out.append("   |");
          for(int I=0;I<width;I++)
             out.append(""+((I+1)%10));
             
         out.append('\n');
         
-
-    
-		for(int I = 0; I < histogram.length; I++){
-        	out.append(I+1);
-        	switch((int)Math.log10(I+1)){
-            	case 0:
-                	out.append("  |");
-                	break;
+        //print out the data
+	for(int I = 0; I < histogram.length; I++){
+	out.append(I+1);
+	switch((int)Math.log10(I+1)){
+    		case 0:
+        		out.append("  |");
+        		break;
             	case 1:
                 	out.append(" |");
                		break;
