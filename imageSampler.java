@@ -10,11 +10,11 @@ public class imageSampler{
 
     public BufferedImage originalImage;
     public String signiture;
-    public float[] kernalsWidths {512} 
+    public float[] kernalsWidths;
     public float[] histogram;
     public String[][] dataBase;
     public float signitureCovariance[][];
-    public cardHyptissisData chd = new(projecteddistance, scaleFactor,);
+    public float[][][] cardHyptissisData chd;
     
     
     public String[] returnMatches(){
@@ -27,12 +27,6 @@ public class imageSampler{
         for(int I = 0; I<kernals.length; I++){//for each field of view use a different boxWidth
             numSamples = ((int)(grayScaleImage.getWidth() / xResolution)) * ((int)(grayScaleImage.getHeight()/yResolution));
             boxWIdth = Math.pow()
-            
-            //magic cards have an aspect ratio of 5:7(2.5in x 3.5in) and the 
-            //diferance 2. The cards are chunked into 3 intersecting parts so 
-            //with this equation w*h*(w-h)/chunks 5*7*2/3 = 70/3 This
-            //is thought to be a plank width for the minimum dectectable size 
-            //of a magic card 20px x 28px
             
             
             
