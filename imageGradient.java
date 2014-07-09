@@ -7,14 +7,12 @@ import javax.imageio.;
 public class imageGradiant{
     private Kernal xKernal, yKernal;
     private ConvlolutionOP xConvolve, yConvovle
-    
+    private final static int[] xSobel = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};
+    private final static int[] ySobel = {1, 2, 1, 0, 0, 0, -1, -2, -1};
     
     public imageGradiant(){
-        int[] x = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};
-        int[] y = {1, 2, 1, 0, 0, 0, -1, -2, -1};
-        
-        xKernal = new Kernal(3, 3, x);
-        yKernal = new Kernal(3, 3, y);
+        xKernal = new Kernal(3, 3, xSobel);
+        yKernal = new Kernal(3, 3, ySobel);
         
         xConvolve = new ConvolutionOP(xKernal, EDGE_NO_OP, null);
         yConvolve = new ConvolutionOP(yKernal, EDGE_NO_OP, null);
@@ -53,18 +51,16 @@ public class imageGradiant{
         
         out = ig.prossses(img);
         
-        saveImageFile(out, args[0]+".gradient"
+        saveImageFile(out, args[0]+".gradient");
         
         
     }
 
   public static int[] quantizePixle(BufferedImage img, int x, int y){
-    int clr   =  img.getRGB(x, y); 
-    int red   = (clr & 0x00ff0000) >> 16;
-    int green = (clr & 0x0000ff00) >> 8;
-    int blue  =  clr & 0x000000ff;
+    int clr =  img.getRGB(x, y); 
     
-    int[]  out = {red, green, blue};
+                 //    red                  //     green             //       blue
+    int[]  out = {(clr & 0x00ff0000) >> 16, (clr & 0x0000ff00) >> 8, clr & 0x000000ff};
     
     return out;
   }    
