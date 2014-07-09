@@ -1,4 +1,4 @@
-//calculate the intesity gradiant of an image using the sobel method
+//calculate the intesity gradiant of an image using the Sobel method
 import java.awt.Image.BufferedImage;
 import java.awt.image.*;
 import java.io.*;
@@ -24,11 +24,13 @@ public class imageGradiant{
         
         BufferedImage intesityMap = intensityMap.remap(img);
         
+        
         xGradiant = xConvolve.filter(intesityMap, null);
         yGradiant = yConvolve.filter(intesityMap, null);
         
+        
         for(int I = 0; I<intesityMap.getWidth(); I++){
-            for(int K = 0; K<intesityMap.getHeight(); K++)
+            for(int J = 0; J<intesityMap.getHeight(); J++)
                 int a , b , n;
                 a = qantizePixle(xGradiant, I , J)[0];
                 b = qantizePixle(yGradiant, I , J)[0];
@@ -52,16 +54,12 @@ public class imageGradiant{
         out = ig.prossses(img);
         
         saveImageFile(out, args[0]+".gradient");
-        
-        
     }
 
   public static int[] quantizePixle(BufferedImage img, int x, int y){
     int clr =  img.getRGB(x, y); 
-    
                  //    red                  //     green             //       blue
     int[]  out = {(clr & 0x00ff0000) >> 16, (clr & 0x0000ff00) >> 8, clr & 0x000000ff};
-    
     return out;
   }    
 
