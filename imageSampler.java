@@ -1,4 +1,7 @@
 //crud class for identifying magic cards
+import java.util.image.*;
+import java.util.Image.BufferedImage;
+import java.
 
 
 public class imageSampler{
@@ -14,9 +17,13 @@ public class imageSampler{
     public float[] kernalsWidths;
     public float[][] kernals;
     public float[] histogram;
+    
     public float[][] dataBase;
-    public float[][] signitureCovariance;
-    public float[][][][] cardHypothesisData chd;// [xSamples][ySamples][N] = signitureCovariance[][]
+    public String[] cardNames;
+    
+    public float[] signitureCovariance;
+    public float[][][] cardHypothesisData;// [xSamples][ySamples][N] = signitureCovariance[][]
+    public int[] projections;
     
     
     public String[] returnMatches(){
@@ -44,19 +51,57 @@ public class imageSampler{
                     }
                 }    
             }    
-        }
+        
         
         //We must now take are data and build the most likely world view
         //ToDo: We will first do a local summation via median window filter.
         //Canidits with the hights score in each position will be bubbled up.
-        //
-        
-        
-        
-        
-        
-        
-        
+           
+            for(int J = samplerWidth; J < cardHypothiesData.length - samplerWidth; J++){    // in the  X direction
+                for(int K = samplerWidth; K < cardHyopthesisData.length - samplerWidth; K++)  // in the Y direction
+                    int cardInferance = -1;
+                    float score;   
+                    
+                    for(int L = 0; L < cardHypothisesData[][][].length; L++){//for each card
+                        float localScore = 0;
+                        
+                        for(int M = -samplerWidth; M < samplerWidth; M++){ // for windowX
+                            for(int N = -samplerWidth; N < samplerWidth; N++){//for windowY
+                                localScore +=cardHypotisData[J+L][K+M][L]       //acumlate sum of hypotiss
+                            } 
+                        }
+                        
+                        if(localScore>threshold && localScore>score){
+                            cardInferance = L;
+                            score = localScore;
+                        }
+                    }
+                    projections[J*(cardHypothisData.length-samplerWidth)+K - samplerWidth]
+                }
+            }
+            //acumulate histogram of projections
+            int[] histogram = new int[numCards]
+            for(int J = 0; J < projections.length; J++){
+                if(projections[I]==-1) continue;
+                histogram[projections[I]]++;
+            }
+            //determin print order
+            int[] outputOrder = new int[numCards];
+            int index = 0;
+            
+            for(int J = 0 ;index < numCards; J++){
+                for(int K = 0; K < numCards; K++){
+                    if(J == histogram[K]){
+                        outputOrder[index] = K;
+                        index++;
+                    }
+                }
+            }
+            
+            //print results
+            for(int J = 0; J < 10; J++)
+                System.out.println(cardNames[outputOrder[numCards-1-J]+":"+projections[outputOrder[numCards-1-J]);
+        }
         
     }
         
