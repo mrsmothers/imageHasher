@@ -25,17 +25,14 @@ public class imageGradient{
             for(int J = 0; J<im.getHeight()-2; J++){
                 int a , b , n;
                 a =(int) mask(im, I, J, xSobel, 3);
-                
                 b =(int) mask(im, I, J, ySobel, 3);
+                n = (int)(Math.pow(Math.pow(a, 2) + Math.pow(b, 2), .5));//sqrt(a^2+b^2)
                 
-                
-                n = (int)(Math.pow(Math.pow(a, 2) + Math.pow(b, 2), .5));
                 if(n>255) n = 255;
-				if(n<0) n = 0;
-                Color color = new Color(n, n, n);
                 
+                Color color = new Color(n, n, n);
                 out.setRGB(I, J, color.getRGB());
-			}
+		}
         }
         
         return out;
