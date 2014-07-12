@@ -21,12 +21,12 @@ public class imageGradient{
         BufferedImage im = intensityMap.remap(img);
         
         
-        for(int I = 1; I<im.getWidth()-1; I++){
-            for(int J = 1; J<im.getHeight()-1; J++){
+        for(int I = 0; I<im.getWidth()-2; I++){
+            for(int J = 0; J<im.getHeight()-2; J++){
                 int a , b , n;
-                a = mask(im, I, J, xSobel, 3);
+                a =(int) mask(im, I, J, xSobel, 3);
                 
-                b = mask(im, I, J, ySobel, 3);
+                b =(int) mask(im, I, J, ySobel, 3);
                 
                 
                 n = (int)(Math.pow(Math.pow(a, 2) + Math.pow(b, 2), .5));
@@ -55,14 +55,14 @@ public class imageGradient{
     //applys a wndow funtion to a portion of an image
     //a weighted summation of the red band is perfomed
     
-    public float mask(int x0, int y0, BufferedImage img, int width, float[] bla){
+    public float mask(BufferedImage img, int x0, int y0, float[] bla, int width){
     	int index = 0;
     	float out =0;
     	
     	for(int I = x0; I < x0 + width;I++){
     		for(int J = y0; J < y0 + width;J++){
     			int pixle = img.getRGB(I, J);
-    			out += bla[index++] * ((clr & 0x00ff0000) >> 16);
+    			out += bla[index++] * ((pixle & 0x00ff0000) >> 16);
     		}
     	}
     	return out;
