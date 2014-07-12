@@ -8,35 +8,26 @@ import javax.imageio.* ;
 import java.awt.image.ConvolveOp;
 
 public class imageGradient{
-    private Kernel xKernel, yKernel;
-    private ConvolveOp xConvolve, yConvolve;
     private final static float[] xSobel = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};
     private final static float[] ySobel = {1, 2, 1, 0, 0, 0, -1, -2, -1};
     
     public imageGradient(){
-        xKernel = new Kernel(3, 3, xSobel);
-        yKernel = new Kernel(3, 3, ySobel);
-        
-        xConvolve = new ConvolveOp(xKernel, ConvolveOp.EDGE_NO_OP, null);
-        yConvolve = new ConvolveOp(yKernel, ConvolveOp.EDGE_NO_OP, null);
     }
     
     public BufferedImage prosses(BufferedImage img){
-        BufferedImage xGradient, yGradient;
+        int[][] xGradient, yGradient;
         BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
         
         BufferedImage im = intensityMap.remap(img);
         
         
-        xGradient = xConvolve.filter(im, null);
-        yGradient = yConvolve.filter(im, null);
-        saveImageFile(xGradient,"duh");
-        
-        for(int I = 0; I<im.getWidth(); I++){
-            for(int J = 0; J<im.getHeight(); J++){
+        for(int I = 1; I<im.getWidth()-1; I++){
+            for(int J = 1; J<im.getHeight()-1; J++){
                 int a , b , n;
-                a = quantizePixle(xGradient, I , J)[0];
-                b = quantizePixle(yGradient, I , J)[0];
+                a = mask(im, I, J, xSobel, 3);
+                
+                b = mask(im, I, J, ySobel, 3);
+                
                 
                 n = (int)(Math.pow(Math.pow(a, 2) + Math.pow(b, 2), .5));
                 if(n>255) n = 255;
@@ -59,6 +50,22 @@ public class imageGradient{
         out = ig.prosses(img);
         
         saveImageFile(out, args[0]+".gradient");
+    }
+    
+    //applys a wndow funtion to a portion of an image
+    //a weighted summation of the red band is perfomed
+    
+    public float mask(int x0, int y0, BufferedImage img, int width, float[] bla){
+    	int index = 0;
+    	float out =0;
+    	
+    	for(int I = x0; I < x0 + width;I++){
+    		for(int J = y0; J < y0 + width;J++){
+    			int pixle = img.getRGB(I, J);
+    			out += bla[index++] * ((clr & 0x00ff0000) >> 16);
+    		}
+    	}
+    	return out;
     }
 
   public static int[] quantizePixle(BufferedImage img, int x, int y){
