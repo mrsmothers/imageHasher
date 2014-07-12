@@ -1,45 +1,50 @@
 //calculate the intesity gradiant of an image using the Sobel method
-import java.awt.Image.BufferedImage;
+import java.awt.image.BufferedImage;
 import java.awt.image.*;
+import java.awt.Transparency;
+import java.awt.Color;
 import java.io.*;
-import javax.imageio.;
+import javax.imageio.* ;
+import java.awt.image.ConvolveOp;
 
-public class imageGradiant{
-    private Kernal xKernal, yKernal;
-    private ConvlolutionOP xConvolve, yConvovle
-    private final static int[] xSobel = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};
-    private final static int[] ySobel = {1, 2, 1, 0, 0, 0, -1, -2, -1};
+public class imageGradient{
+    private Kernel xKernel, yKernel;
+    private ConvolveOp xConvolve, yConvolve;
+    private final static float[] xSobel = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};
+    private final static float[] ySobel = {1, 2, 1, 0, 0, 0, -1, -2, -1};
     
-    public imageGradiant(){
-        xKernal = new Kernal(3, 3, xSobel);
-        yKernal = new Kernal(3, 3, ySobel);
+    public imageGradient(){
+        xKernel = new Kernel(3, 3, xSobel);
+        yKernel = new Kernel(3, 3, ySobel);
         
-        xConvolve = new ConvolutionOP(xKernal, EDGE_NO_OP, null);
-        yConvolve = new ConvolutionOP(yKernal, EDGE_NO_OP, null);
+        xConvolve = new ConvolveOp(xKernel, ConvolveOp.EDGE_NO_OP, null);
+        yConvolve = new ConvolveOp(yKernel, ConvolveOp.EDGE_NO_OP, null);
     }
     
     public BufferedImage prosses(BufferedImage img){
-        BufferedImage xGradient, yGradiant;
+        BufferedImage xGradient, yGradient;
         BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
         
-        BufferedImage intesityMap = intensityMap.remap(img);
+        BufferedImage im = intensityMap.remap(img);
         
         
-        xGradiant = xConvolve.filter(intesityMap, null);
-        yGradiant = yConvolve.filter(intesityMap, null);
+        xGradient = xConvolve.filter(im, null);
+        yGradient = yConvolve.filter(im, null);
+        saveImageFile(xGradient,"duh");
         
-        
-        for(int I = 0; I<intesityMap.getWidth(); I++){
-            for(int J = 0; J<intesityMap.getHeight(); J++)
+        for(int I = 0; I<im.getWidth(); I++){
+            for(int J = 0; J<im.getHeight(); J++){
                 int a , b , n;
-                a = qantizePixle(xGradiant, I , J)[0];
-                b = qantizePixle(yGradiant, I , J)[0];
+                a = quantizePixle(xGradient, I , J)[0];
+                b = quantizePixle(yGradient, I , J)[0];
                 
-                n = Math.pow(Math.pow(a, 2) + Math.pow(b, 2), .5);
-                
-                Color color = new Color(n, n, n,);
+                n = (int)(Math.pow(Math.pow(a, 2) + Math.pow(b, 2), .5));
+                if(n>255) n = 255;
+				if(n<0) n = 0;
+                Color color = new Color(n, n, n);
                 
                 out.setRGB(I, J, color.getRGB());
+			}
         }
         
         return out;
@@ -49,9 +54,9 @@ public class imageGradiant{
         BufferedImage img = openImageFile(args[0]);
         BufferedImage out;
         
-        imageGradient ig = new imageGradent();
+        imageGradient ig = new imageGradient();
         
-        out = ig.prossses(img);
+        out = ig.prosses(img);
         
         saveImageFile(out, args[0]+".gradient");
     }
