@@ -35,7 +35,7 @@ public class imageSampler{
         //box portions of the screen to build the chd(card hypothesis data)
         for(int I = 0; I<kernals.length; I++){//for each field of view use a different boxWidth
             numSamples = ((int)(grayScaleImage.getWidth() / xResolution)) * ((int)(grayScaleImage.getHeight()/yResolution));
-           //ToDo:finish this boxWIdth = Math.pow()
+           
             
             //ToDo:add nessary code to allow Window function to start at intermediate points. 
             //ToDo:define x & y resolution 
