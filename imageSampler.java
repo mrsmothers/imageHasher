@@ -14,7 +14,7 @@ public class imageSampler{
 //FunFact:The aspect ratio of a magic card is 5:7(2.5'' x 3.5'')
 
     public BufferedImage originalImage;
-    public float[] kernalsWidths;
+    public float[] kernalsWidths = {512};
     public float[][] kernals;
     public float[] histogram;
     
@@ -24,27 +24,36 @@ public class imageSampler{
     public float[] signitureCovariance;
     public float[][][] cardHypothesisData;// [xSamples][ySamples][N] = signitureCovariance[][]
     public int[] projections;
+
+
+	public int deltaX = 10;
+	public int deltaY = 10;
     
     
     public String[] returnMatches(){
         BufferedImage grayScaleImage = intesityMap.remap(originalImage);
         int numSamples;
         
-        int boxWidth;
+        
         
         //box portions of the screen to build the chd(card hypothesis data)
         for(int I = 0; I<kernals.length; I++){//for each field of view use a different boxWidth
-            numSamples = ((int)(grayScaleImage.getWidth() / xResolution)) * ((int)(grayScaleImage.getHeight()/yResolution));
+			int boxWidth = 2*kernalWidths[I]+1;
+            //numSamples = ((int)(grayScaleImage.getWidth() / deltaX)) * ((int)(grayScaleImage.getHeight()/deltaY));
+			kernals = new float[kernalWidths.length][];
+
+			for(int J = 0; J < kernalsWidths.length; J++)
+				kernals[J] = ImageHasher.gassianKernal(kernalWidths[J]);
+			
            
             
             //ToDo:add nessary code to allow Window function to start at intermediate points. 
-            //ToDo:define x & y resolution 
             
-            for(int J = 0; J<originalImage.length+boxWidth; J+=xResolution){// for the length of the image
-                for(int K = 0; K<originalImage.length+boxWidth; K+=yResolution){// for the height of the  image
+            for(int J = 0; J<originalImage.length+boxWidth; J+=deltaX){// for the length of the image
+                for(int K = 0; K<originalImage.length+boxWidth; K+=deltaY){// for the height of the  image
             
-                    // applay gassian filter to region of image to generate histogram
-                    histogram = gassianHistogramWindower(grayScaleImage, x0, Y0, kernal[I])//ToDo:Define This
+                    // apply gassian filter to region of image to generate histogram
+                    histogram = gassianHistogramWindower(grayScaleImage, J, K, kernals[I], kernalWidths[I])
         
                     for(int L = 0; L< numSamples; L++){//compare sample with all other signitures
                         signitureCovariance[I][L] = signatureCompare(histogram, dataBase[L]);//differance in eqilized histograms
@@ -104,7 +113,31 @@ public class imageSampler{
         }
         
     }
-        
+    
+
+	public static float[] gassianHistogramWindower(BufferedImage img, int x0, int y0, float[] mask, int maskWidth){
+	    float[] out = new float[256];
+		int maskIndex = 0;
+		
+		for(int I = x0; I < x0 + maskWidth; x0++){
+			for(int J = y0; J < y0 + maskWidth; J++){
+				out[(img.getRGB(I, J) & x00ff0000) >> 16] += mask[maskIndex];
+				maskIndex++;
+			}
+		}
+
+		return out;
+	}
+
+	public static float signatureCompare(float[] arg1, float[] arg2){
+		float runningSum = 0f;	
+
+		for(int I = 0; I < arg1.length;I++)
+			runningSum +=Math.pow(arg1[I]-arg2[I],.5);
+
+		return runningSum;
+	}
+					
     
 
   
