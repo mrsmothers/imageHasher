@@ -3,7 +3,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 
-public class imageHasher{ 
+public class ImageHasher{ 
   public int halfLength;
   public double variance;
 
