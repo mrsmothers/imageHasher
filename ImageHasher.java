@@ -7,13 +7,13 @@ public class imageHasher{
   public int halfLength;
   public double variance;
 
-  public imageHasher(int halfLength, double variance){
+  public ImageHasher(int halfLength, double variance){
   	this.halfLength = halfLength;
   	this.variance = variance;
   }
   
   public BufferedImage hash(BufferedImage image){
-    Kernel kernel =  new Kernel(2*halfLength + 1, 2*halfLength + 1, imageHasher.gassianKernel(this.halfLength, this.variance));
+    Kernel kernel =  new Kernel(2*halfLength + 1, 2*halfLength + 1, ImageHasher.gassianKernel(this.halfLength, this.variance));
     //Java Native Convolution Object
     ConvolveOp cOP = new ConvolveOp(kernel);
     //apply gassian bluring function  
