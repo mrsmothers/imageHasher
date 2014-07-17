@@ -114,7 +114,7 @@ public class imageSampler{
         
     }
     
-
+	//method aplays a mask to sample a rectaguler region of the screen 
 	public static float[] gassianHistogramWindower(BufferedImage img, int x0, int y0, float[] mask, int maskWidth){
 	    float[] out = new float[256];
 		int maskIndex = 0;
@@ -129,13 +129,14 @@ public class imageSampler{
 		return out;
 	}
 
+	//uses mean of differances squared to compare two histogram
 	public static float signatureCompare(float[] arg1, float[] arg2){
 		float runningSum = 0f;	
 
-		for(int I = 0; I < arg1.length;I++)
-			runningSum +=Math.pow(arg1[I]-arg2[I],.5);
+		for(int I = 0; I < arg1.length; I++)
+			runningSum +=Math.pow(arg1[I]-arg2[I], 2);
 
-		return runningSum;
+		return 1-runningSum/arg1.length;
 	}
 					
     
