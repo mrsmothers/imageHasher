@@ -9,7 +9,7 @@ import java.io.*;
 import javax.imageio.*;
 import java.util.Arrays;
 
-public class itensityMap{ 
+public class ItensityMap{ 
   
   public static BufferedImage remap(BufferedImage img){
     BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
