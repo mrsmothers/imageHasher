@@ -9,7 +9,7 @@ import java.io.*;
 import javax.imageio.*;
 import java.util.Arrays;
 
-public class ItensityMap{ 
+public class IntensityMap{ 
   
   public static BufferedImage remap(BufferedImage img){
     BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
@@ -66,6 +66,15 @@ public class ItensityMap{
   }
   
   public static float vLength(float[] vector){
+    double sum = 0;
+    
+    for(int I=0; I<vector.length; I++)
+      sum += Math.pow(vector[I], 2);
+      
+    return (float)Math.pow(sum, 0.5);
+  }
+
+  public static float vLength(int[] vector){
     double sum = 0;
     
     for(int I=0; I<vector.length; I++)
