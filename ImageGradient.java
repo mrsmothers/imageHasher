@@ -7,18 +7,15 @@ import java.io.*;
 import javax.imageio.* ;
 import java.awt.image.ConvolveOp;
 
-public class imageGradient{
+public class ImageGradient{
     private final static float[] xSobel = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};
     private final static float[] ySobel = {1, 2, 1, 0, 0, 0, -1, -2, -1};
-    
-    public imageGradient(){
-    }
-    
-    public BufferedImage prosses(BufferedImage img){
+
+    public static BufferedImage prosses(BufferedImage img){
         int[][] xGradient, yGradient;
         BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
         
-        BufferedImage im = intensityMap.remap(img);
+        BufferedImage im = IntensityMap.remap(img);
         
         
         for(int I = 0; I<im.getWidth()-2; I++){
@@ -32,7 +29,7 @@ public class imageGradient{
                 
                 Color color = new Color(n, n, n);
                 out.setRGB(I, J, color.getRGB());
-		}
+			}
         }
         
         return out;
@@ -41,10 +38,8 @@ public class imageGradient{
     public static void main(String[] args){
         BufferedImage img = openImageFile(args[0]);
         BufferedImage out;
-        
-        imageGradient ig = new imageGradient();
-        
-        out = ig.prosses(img);
+                
+        out = ImageGradient.prosses(img);
         
         saveImageFile(out, args[0]+".gradient");
     }
@@ -52,7 +47,7 @@ public class imageGradient{
     //applys a wndow funtion to a portion of an image
     //a weighted summation of the red band is perfomed
     
-    public float mask(BufferedImage img, int x0, int y0, float[] bla, int width){
+    public static float mask(BufferedImage img, int x0, int y0, float[] bla, int width){
     	int index = 0;
     	float out =0;
     	
