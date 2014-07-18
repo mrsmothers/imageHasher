@@ -34,6 +34,20 @@ public class ImageHasher{
 
     return out;
   }
+
+  public static float[] gassianKernel(int halfLength, float variance){
+    int length = (int)Math.pow(2*halfLength + 1, 2);
+    float[] out = new float[length];
+    
+    for(int I = -halfLength; I<=halfLength; I++){
+      for(int K = -halfLength; K<=halfLength; K++){
+        out[(I + halfLength)*(2*halfLength + 1) + K + halfLength] = 
+                      ((float)(1/(2*Math.PI*Math.pow(variance, 2)))) *((float) Math.exp(-(I*I + K*K)/(2*Math.pow(variance, 2))));
+      }
+    }
+
+    return out;
+  }
   
   
  
