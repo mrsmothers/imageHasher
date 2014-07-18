@@ -8,7 +8,7 @@ import java.lang.StringBuilder;
 import java.lang.Math;
 
 
-public class imageHistogram{
+public class ImageHistogram{
 	int mode;
 	int entries;
 	int[] histogram;
@@ -17,15 +17,15 @@ public class imageHistogram{
   
 	public static void main(String[] args){
 		BufferedImage img = openImageFile(args[0]);
-		imageHistogram ih = new imageHistogram(img);
+		ImageHistogram ih = new ImageHistogram(img);
 	
 		System.out.println(ih.print(50));
 
   	}
 
-	public imageHistogram(BufferedImage img){
+	public ImageHistogram(BufferedImage img){
 		mode = 0;
-		entries++;
+		entries = img.getWidth()*img.getHeight();
 		histogram = prosses(img);
 
 	}	
@@ -42,7 +42,6 @@ public class imageHistogram{
         int tmp = (int)(vLength((vnu))/(Math.pow(3, 0.5)));
 
         out[tmp]++;
-		enteies++;
 
 		if(out[tmp] > out[mode])
 			mode = tmp;
