@@ -10,8 +10,10 @@ public class HistogramImageHash{
 		float out[][] = new float[3][256];
 		BufferedImage gradient = ImageGradient.prosses(img);
 		
-		int kernalWidth = (img.getWidth()-1)/2;
-		float[] kernal = ImageHasher.gassianKernel(kernalWidth , 1f);
+		int kernalHalfWidth = (img.getWidth()-1)/2;
+		int kernalWidth = kernalHalfWidth*2+1;
+		
+		float[] kernal = ImageHasher.gassianKernel(kernalHalfWidth , 1f);
 		
 		int kernalIndex = 0;
 		for(int I = 0; I < kernalWidth;I++){
@@ -25,4 +27,5 @@ public class HistogramImageHash{
 		System.out.println(Arrays.toString(kernal));
 		return out;
 	}
+	
 }
