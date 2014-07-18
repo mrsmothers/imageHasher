@@ -4,6 +4,7 @@ import java.awt.Image;
 import javax.imageio.*;
 import java.io.IOException;
 import java.io.File;
+import java.util.*;
 
 
 public class ImageSampler{
@@ -34,7 +35,7 @@ public class ImageSampler{
 
 	public int projectionSamplerWidth = 3;
     public int projectionSupressionThreshold = 0;
-	public int numberOfOutputs = 3;
+	public int numberOfOutputs = 1;
 	
     
 	public ImageSampler(){
@@ -48,24 +49,26 @@ public class ImageSampler{
 
 		cardNames[0] = "Neal Patric Haris";
 		fileNames[0] = "nph.jpg";
-
+/*
 		cardNames[1] = "Charizard";
-		fileNames[1]  "charizard.jpg";
+		fileNames[1] = "charizard.jpg";
 		
 		cardNames[2] = "Echo-Mage";
 		fileNames[2] = "magic-2.jpg";
 
 		cardNames[3] = "Alloy Myr";
 		fileNames[3] = "myr.jpg" ;
-		
+		*/
 		//load Cards and build database
 		for(int I = 0; I < numCards; I++){
 			BufferedImage img = openImageFile("db/"+fileNames[I]);
 			
 			float[][] tmp = HistogramImageHash.prosses(img);
 			//unpack hashes
-			for(int K = 0; K < this.numSamples;K++)
+			for(int K = 0; K < this.numSamples;K++){
 				dataBase[numSamples*I+K] =  tmp[K];
+				//-------System.out.println(Arrays.toString(dataBase[numSamples*I+K]));
+			}
 		}
 	}
     //box portions of the screen to build the chd(card hypothesis data)
@@ -74,7 +77,7 @@ public class ImageSampler{
         
         
         //for each field of view use a different mask 
-        for(int I = 0; I<kernals.length; I++){
+        for(int I = 0; I<kernalHalfWidths.length; I++){
 
 			//init values and data
 			int boxWidth = 2*kernalHalfWidths[I]+1;
@@ -86,16 +89,19 @@ public class ImageSampler{
             
             //ToDo:add nessary code to allow Window function to start at intermediate points. 
             
-            for(int J = 0; J<img.getWidth()+boxWidth; J+=deltaX[I]){// for the length of the image
-                for(int K = 0; K<img.getHeight()+boxWidth; K+=deltaY[I]){// for the height of the  image
+            for(int J = 0; J<img.getWidth()-boxWidth; J+=deltaX[I]){// for the length of the image
+                for(int K = 0; K<img.getHeight()-boxWidth; K+=deltaY[I]){// for the height of the  image
             
                     // apply gassian filter to region of image to generate histogram
                     histogram = gassianHistogramWindower(grayScaleImage, J, K, kernal, boxWidth);
         
                     for(int L = 0; L< this.numSamples*numCards; L++){//compare sample with all other signitures
                         signitureCovariance[L] = signatureCompare(histogram, dataBase[L]);//differance in eqilized histograms
+						System.out.print(signitureCovariance[L]);
                     }
-                }    
+					System.out.println();
+                }  
+  
             }    
         
         
@@ -106,7 +112,7 @@ public class ImageSampler{
 		
            	projections = new int[cardHypothesisData.length - projectionSamplerWidth][cardHypothesisData[0].length - projectionSamplerWidth];
             for(int J = 0; J < cardHypothesisData.length - projectionSamplerWidth; J++){    // in the  X direction
-                for(int K = 0; K < cardHypothesisData.length - projectionSamplerWidth; K++) { // in the Y direction
+                for(int K = 0; K < cardHypothesisData[J].length - projectionSamplerWidth; K++) { // in the Y direction
                     int cardInferance = -1;
                     float score = 0;   
                     
@@ -115,7 +121,7 @@ public class ImageSampler{
                         
                         for(int M = 0; M < projectionSamplerWidth; M++){ // for windowX
                             for(int N = 0; N < projectionSamplerWidth; N++){//for windowY
-                                localScore +=cardHypothesisData[J+L][K+M][L];       //acumlate sum of hypotiss
+                                localScore +=cardHypothesisData[J+N][K+M][L];       //acumlate sum of hypotiss
                             } 
                         }
                         
@@ -156,7 +162,7 @@ public class ImageSampler{
     
     public static void main(String[] args){
     	ImageSampler sampler = new ImageSampler();
-    	sampler.returnMatches(args[0]);
+    	sampler.returnMatches(openImageFile(args[0]));
     }
     
 	//method aplays a mask to sample a rectaguler region of the screen 
