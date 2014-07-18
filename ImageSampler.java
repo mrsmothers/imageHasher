@@ -16,14 +16,11 @@ public class ImageSampler{
 //FunFact:The aspect ratio of a magic card is 5:7(2.5'' x 3.5'')
 
 	public int[] kernalHalfWidths = {250};
-    public float[][] kernals;
 	public float[] kernalVariance = {0.5f};
 	public int deltaX[] = {10};
 	public int deltaY[] = {10};
 
-
     public float[] histogram;
-    
     
 	public int numCards;
 	public int numSamples = 0 ;
@@ -38,9 +35,7 @@ public class ImageSampler{
 	public int projectionSamplerWidth = 3;
     public int projectionSupressionThreshold = 0;
 	public int numberOfOutputs = 3;
-
-
-
+	
     
 	public ImageSampler(){
 		this.numCards = 1;
@@ -56,31 +51,26 @@ public class ImageSampler{
 
 		cardNames[1] = "Charizard";
 		fileNames[1]  "charizard.jpg";
-
 		
 		cardNames[2] = "Echo-Mage";
 		fileNames[2] = "magic-2.jpg";
 
 		cardNames[3] = "Alloy Myr";
 		fileNames[3] = "myr.jpg" ;
-
-
+		
 		//load Cards and build database
 		for(int I = 0; I < numCards; I++){
-			BufferedImage img = openImageFile(fileNames[I]);
+			BufferedImage img = openImageFile("db/"+fileNames[I]);
 			
 			float[][] tmp = HistogramImageHash.prosses(img);
 			//unpack hashes
 			for(int K = 0; K < this.numSamples;K++)
-				dataBase[numSamples*I+K] = tmp[K];
+				dataBase[numSamples*I+K] =  tmp[K];
 		}
 	}
     //box portions of the screen to build the chd(card hypothesis data)
     public void returnMatches(BufferedImage img){
-		//convert to gray scale
-        BufferedImage grayScaleImage = ImageGradient.prosses(img);
-        int numSamples;
-        
+        BufferedImage grayScaleImage = ImageGradient.prosses(img);//convert to gray scale
         
         
         //for each field of view use a different mask 
@@ -91,10 +81,7 @@ public class ImageSampler{
             cardHypothesisData = new float[(int)(grayScaleImage.getWidth()/ deltaX[I])][(int)(grayScaleImage.getHeight()/deltaY[I])][numCards*this.numSamples] ;
 
 			//Generate Maskes
-			kernals = new float[kernalHalfWidths.length][];
-			for(int J = 0; J < kernalHalfWidths.length; J++)
-				kernals[J] = ImageHasher.gassianKernel(kernalHalfWidths[J], kernalVariance[I]);
-			
+			float[] kernal =  ImageHasher.gassianKernel(kernalHalfWidths[I], kernalVariance[I]);
            
             
             //ToDo:add nessary code to allow Window function to start at intermediate points. 
@@ -103,9 +90,9 @@ public class ImageSampler{
                 for(int K = 0; K<img.getHeight()+boxWidth; K+=deltaY[I]){// for the height of the  image
             
                     // apply gassian filter to region of image to generate histogram
-                    histogram = gassianHistogramWindower(grayScaleImage, J, K, kernals[I], 2*kernalHalfWidths[I]+1);
+                    histogram = gassianHistogramWindower(grayScaleImage, J, K, kernal, boxWidth);
         
-                    for(int L = 0; L< this.numSamples; L++){//compare sample with all other signitures
+                    for(int L = 0; L< this.numSamples*numCards; L++){//compare sample with all other signitures
                         signitureCovariance[L] = signatureCompare(histogram, dataBase[L]);//differance in eqilized histograms
                     }
                 }    
@@ -117,13 +104,13 @@ public class ImageSampler{
         //Canidits with the hights score in each position will be bubbled up.
 
 		
-           	projections = new int[cardHypothesisData.length][cardHypothesisData[0].length];
+           	projections = new int[cardHypothesisData.length - projectionSamplerWidth][cardHypothesisData[0].length - projectionSamplerWidth];
             for(int J = 0; J < cardHypothesisData.length - projectionSamplerWidth; J++){    // in the  X direction
                 for(int K = 0; K < cardHypothesisData.length - projectionSamplerWidth; K++) { // in the Y direction
                     int cardInferance = -1;
                     float score = 0;   
                     
-                    for(int L = 0; L < numCards; L++){//for each card
+                    for(int L = 0; L < numCards*numSamples; L++){//for each card
                         float localScore = 0;
                         
                         for(int M = 0; M < projectionSamplerWidth; M++){ // for windowX
@@ -144,8 +131,8 @@ public class ImageSampler{
             int[] histogram = new int[numCards];
             for(int J = 0; J < projections.length; J++){
 				for(int K = 0; K < projections[J].length; K++){
-                if(projections[J][K]==-1) continue;
-                histogram[projections[J][K]/this.numSamples]++;//divide by number of samples
+                if(projections[J][K]!=-1)
+                	histogram[projections[J][K]/this.numSamples]++;//divide by number of samples
 				}
             }
             //determin print order
@@ -165,8 +152,11 @@ public class ImageSampler{
             for(int J = 0; J < numberOfOutputs; J++)
                 System.out.println(cardNames[outputOrder[numCards-1-J]]+":"+histogram[outputOrder[numCards-1-J]]);
         }
-		
-        
+    }
+    
+    public static void main(String[] args){
+    	ImageSampler sampler = new ImageSampler();
+    	sampler.returnMatches(args[0]);
     }
     
 	//method aplays a mask to sample a rectaguler region of the screen 
@@ -180,7 +170,6 @@ public class ImageSampler{
 				maskIndex++;
 			}
 		}
-
 
 		return out;
 	}
