@@ -170,7 +170,7 @@ public class ImageSampler{
 	    float[] out = new float[256];
 		int maskIndex = 0;
 		
-		for(int I = x0; I < x0 + maskWidth; x0++){
+		for(int I = x0; I < x0 + maskWidth; I++){
 			for(int J = y0; J < y0 + maskWidth; J++){
 				out[(img.getRGB(I, J) & 0x00ff0000) >> 16] += mask[maskIndex];
 				maskIndex++;
