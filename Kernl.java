@@ -9,15 +9,16 @@ public class Kernel {
         else              return 0;
     }
     
-    public static long permutations(int p, int k){
-        return factorials[p]/(factorials[k]*factorials[p-k]);
+    public static long combinations(int n, int k){
+        if(k<=n) return factorials[p]/(factorials[k]*factorials[p-k]);
+        else return 0;
     }
     
     public static double[] binomialTheorem(int length, float a, float b){
         double[] out= new double[length];
         
         for(int P = 0, K = length-1; I <length; P++, K--)
-            out[P] = permutations(P,K)*Math.pow(a, P)*Math,pow(b, K);
+            out[P] = combinations(P,K)*Math.pow(a, P)*Math,pow(b, K);
             
         return out;
     }
@@ -30,6 +31,4 @@ public class Kernel {
                 out[index] = arg1[I]*arg2[J];
         }
     }
-    
-
 }
