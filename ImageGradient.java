@@ -11,6 +11,9 @@ public class ImageGradient{
     private final static float[] xSobel = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};
     private final static float[] ySobel = {1, 2, 1, 0, 0, 0, -1, -2, -1};
 
+	private final static float[] cross1 = {1, 0, 0, -1};
+	private final static float[] cross2 = {0, 1, -1, 0};
+
     public static BufferedImage prosses(BufferedImage img){
         int[][] xGradient, yGradient;
         BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
@@ -34,14 +37,43 @@ public class ImageGradient{
         
         return out;
     }
+
+    public static BufferedImage cross(BufferedImage img){
+        int[][] xGradient, yGradient;
+        BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
+        
+        BufferedImage im = IntensityMap.remap(img);
+        
+        
+        for(int I = 0; I<im.getWidth()-1; I++){
+            for(int J = 0; J<im.getHeight()-1; J++){
+                int a , b , n;
+                a =(int) mask(im, I, J, cross1, 2);//dx
+                b =(int) mask(im, I, J, cross2, 2);//dy
+                n = (int)(Math.pow(Math.pow(a, 2) + Math.pow(b, 2), .5));//sqrt(a^2+b^2)
+                
+                if(n>255) n = 255;
+                
+                Color color = new Color(n, n, n);
+                out.setRGB(I, J, color.getRGB());
+			}
+        }
+        
+        return out;
+    }
     
     public static void main(String[] args){
         BufferedImage img = openImageFile(args[0]);
-        BufferedImage out;
+        BufferedImage out1, out2, out3;
                 
-        out = ImageGradient.prosses(img);
+        out1 = ImageGradient.prosses(img);
+		out2 = ImageGradient.cross(img);
+		out3 = ImageHasher.hash(img,3, 1.41f);
+		out3 = ImageGradient.cross(out3);
         
-        saveImageFile(out, args[0]+".gradient");
+        saveImageFile(out1, args[0]+".gradient");
+		
+		saveImageFile(out2, args[0]+".cross");
     }
     
     //applys a wndow funtion to a portion of an image
