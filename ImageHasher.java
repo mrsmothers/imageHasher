@@ -4,18 +4,11 @@ import java.io.*;
 import javax.imageio.*;
 
 public class ImageHasher{ 
-  public int halfLength;
-  public double variance;
 
-  public ImageHasher(int halfLength, double variance){
-  	this.halfLength = halfLength;
-  	this.variance = variance;
-  }
-  
-  public BufferedImage hash(BufferedImage image){
-    Kernel kernel =  new Kernel(2*halfLength + 1, 2*halfLength + 1, ImageHasher.gassianKernel(this.halfLength, this.variance));
+  public static BufferedImage hash(BufferedImage image, int halfLength, float variance){
+    Kernel kernel =  new Kernel(2*halfLength + 1, 2*halfLength + 1, ImageHasher.gassianKernel(halfLength, variance));
     //Java Native Convolution Object
-    ConvolveOp cOP = new ConvolveOp(kernel);
+    ConvolveOp cOP = new ConvolveOp(kernel, ConvolveOP.EDGE_NO_OP, null);
     //apply gassian bluring function  
   
     return cOP.filter(image, null);
@@ -34,7 +27,7 @@ public class ImageHasher{
 
     return out;
   }
-
+	
   public static float[] gassianKernel(int halfLength, float variance){
     int length = (int)Math.pow(2*halfLength + 1, 2);
     float[] out = new float[length];
@@ -52,12 +45,15 @@ public class ImageHasher{
   
  
   public static void main(String[] args){
+	if(args.length == 0 || args[0].equals("")){
+		System.out.println(java.util.Arrays.toString(ImageHasher.gassianKernel(200, 20f)));
+		System.out.println(java.util.Arrays.toString(ImageHasher.gassianKernel(1, .5d)));}
+	else{
     BufferedImage img, possesedImg;
-    ImageHasher hasher = new ImageHasher(14, 4.0);
-
     img = openImageFile(args[0]);
-    possesedImg = hasher.hash(img);
+    possesedImg = ImageHasher.hash(img,3, 1.41f);
     saveImageFile(possesedImg, args[0]+".hash");
+}
   }
     
   public static BufferedImage openImageFile(String fileName){
