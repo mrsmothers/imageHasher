@@ -1,5 +1,6 @@
 import java.awt.Image;
 import java.awt.image.*;
+import java.awt.image.ConvolveOp;
 import java.io.*;
 import javax.imageio.*;
 
