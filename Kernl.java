@@ -1,57 +1,72 @@
-import java.util.Math;
+import java.lang.Math;
+import java.awt.image.ConvolveOp;
+import java.awt.image.*;
+import java.awt.Image;
 
 
-public class Kernel {
-    private static long factorials = {1, 1, 2, 6 ,24, 
-                                      120, 720, 5040, 40320,
-                                      362880, 3628800, 39916800,
-                                      479001600, 6227020800,
-                                      87178291200, 1307674368000,
-                                      20922789888000, 355687428096000,
-                                      6402373705728000, 121645100408832000,
-                                      2432902008176640000};
+public class Kerneler {
+    private static long factorials[] = {1, 1, 2, 6 ,24, 120,
+                                        720, 5040, 40320,
+                                        362880, 3628800, 39916800,
+                                        479001600, 6227020800l,
+                                        87178291200l, 1307674368000l,
+                                        20922789888000l, 355687428096000l,
+                                        6402373705728000l,
+                                        121645100408832000l,
+                                        2432902008176640000l};
     
     public static long factorial(int I){
         if(I>=0 || I<=20) return factorials[I];
-        else              return 0;
+        else return 0;
     }
     
     public static long combinations(int n, int k){
         if(k<=n) return factorials[n]/(factorials[k]*factorials[n-k]);
-        else return 0;
+		
+        return 0;
     }
     
-    public static double[] binomialCoefficients(int length, float a, float b){
-        double[] out = new double[length];
+    public static float[] binomialCoefficients(int length, float a, float b){
+        float[] out = new float[length];
         
-        for(int P = 0, K = length-1; I <length; P++, K--)
-            out[P] = combinations(P,K)*Math.pow(a, P)*Math,pow(b, K);
+        for(int P = 0, K = length-1; P < length; P++, K--)
+            out[P] = (float)(combinations(length-1, P)*Math.pow(a, K)*Math.pow(b, P));
             
         return out;
     }
     
-    public static long[] trinomialCoefficents(int halfLength){
-        double[] out = new double[2*halfLength+1];
-        
-        for(int I = 0; I < halfLength+1; I++){
-            double tmp = 0;
-            
-            for(int J = 0; J < halfLength; J++){
-                tmp += factorials[halfLength]/(factorials[J]*factorials[J+I]*factorials[halfLength-2*J-I]);
-            }
-            
-            out[I] = out[2*halfLength-I]=tmp;
-        }
-        
-        return out;
-    }
+
     
-    public static double[] outerProduct(float[] arg1, float[] arg2){
-        double[] out = new double[arg1.length*arg2.length];
+    public static float[] outerProduct(float[] arg1, float[] arg2){
+        float[] out = new float[arg1.length*arg2.length];
         
-        for(int I = 0, index = 0; I arg1.length; I++){
+        for(int I = 0, index = 0; I < arg1.length; I++){
             for(int J = 0; J < arg2.length; J++, index++)
                 out[index] = arg1[I]*arg2[J];
         }
+
+		return out;
     }
+
+	public static void main(String[] args){
+		BufferedImage out0;
+		int width = 15;
+		float lv = .9f;
+		float rv = .1f;
+
+		float[] bla0 = Kerneler.binomialCoefficients(width, lv, rv);
+
+		float[] bla2 = Kerneler.outerProduct(bla0, bla0);
+
+		Kernel kernel = new Kernel(width, width, bla2);
+		ConvolveOp op0 = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+		BufferedImage image = ImageHasher.openImageFile(args[0]);
+
+		
+		 out0 = op0.filter(image, null);
+		ImageHasher.saveImageFile(out0, args[0]+".test1");
+
+
+	}
+
 }
