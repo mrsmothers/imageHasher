@@ -24,9 +24,8 @@ public class ImageSampler{
     
 	public int numCards;
 	public int numSamples = 0 ;
-	public float[][] dataBase;
-    public String[] cardNames;
-	public String[] fileNames ;
+	
+	public CardData[] cardData;
     
     public float[] signitureCovariance;
     public float[][][] cardHypothesisData; // [xSamples][ySamples][N] = signitureCovariance[][]
@@ -78,6 +77,8 @@ public class ImageSampler{
 			}
 		}
 	}
+	
+	public void serializeData()
 
 
     //box portions of the screen to build the chd(card hypothesis data)
@@ -201,26 +202,6 @@ public class ImageSampler{
 			runningSum +=Math.pow(arg1[I]-arg2[I], 2);
 
 		return 1-runningSum/arg1.length;
-	}
-					
-    
-  public static BufferedImage openImageFile(String fileName){
-       BufferedImage img = null;
-       
-       try {
-           img = ImageIO.read(new File(fileName));
-       } catch (IOException e) { }
-
-       return img;
-       
-  }
-  
-  public static void saveImageFile(BufferedImage img, String fileName){
-      try {
-       	File outputfile = new File(fileName);
-	       ImageIO.write(img, "png", outputfile);
-       } catch (IOException e) { }
-  }
-  
+	}			
 }
  
