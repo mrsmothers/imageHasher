@@ -14,7 +14,7 @@ public class ImageSampler{
 //compare with data base
 
 //FunFact:The aspect ratio of a magic card is 5:7(2.5'' x 3.5'')
-
+	public static String DATA_SRC = "data/";
 	public int[] kernalHalfWidths = {75};
 	public float[] kernalVariance = {40};
 	public int deltaX[] = {10};
@@ -39,37 +39,18 @@ public class ImageSampler{
 	public ImageSampler(){
 		this.numCards = 6;
 		this.numSamples = 3;
-		dataBase = new float[numCards*numSamples][];
 
-		//Name of cards and file location
-		cardNames = new String[numCards];
-		fileNames = new String[numCards];
-
-		cardNames[0] = "Neal Patric Haris";
-		fileNames[0] = "nph.jpg";
-
-		cardNames[1] = "Charizard";
-		fileNames[1] = "charizard.jpg";
-	
-		cardNames[2] = "Alloy Myr";
-		fileNames[2] = "myr.jpg" ;
-	
-		cardNames[3] = "ogurki";
-		fileNames[3] = "bomer.jpg";
-
-		cardNames[4] = "Chuck Noris";
-		fileNames[4] = "chuck.jpg";
-
-		cardNames[5] = "Echo Mage";
-		fileNames[5] = "magic-2.jpg";
-
-
-
-	/*	*/
 		//load Cards and build database
 		for(int I = 0; I < numCards; I++){
-			BufferedImage img = openImageFile("db/"+fileNames[I]);
 			
+		try{
+        	FileInputStream fileIn = new FileInputStream(DATA_SRC+I+".ser");
+        	ObjectInputStream in = new ObjectInputStream(fileIn);
+        	e = (CardData) in.readObject();
+    		in.close();
+        	fileIn.close();
+    	}catch(IOException i)
+      
 			float[][] tmp = HistogramImageHash.prosses(img);
 			//unpack hashes
 			for(int K = 0; K < this.numSamples;K++){
