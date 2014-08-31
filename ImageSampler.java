@@ -39,21 +39,17 @@ public class ImageSampler{
 	public ImageSampler(){
 		this.numCards = 6;
 		this.numSamples = 3;
+		this.cardData = new CardData[this.numCards];
 
 		//load Cards and build database
 		for(int I = 0; I < numCards; I++){
 			try{
 	        	FileInputStream fileIn = new FileInputStream(DATA_SRC+"/"+I+".ser");
 	        	ObjectInputStream in = new ObjectInputStream(fileIn);
-	        	cardData = (CardData) in.readObject();
+	        	cardData[I] = (CardData) in.readObject();
 	    		in.close();
 	        	fileIn.close();
-	        	
-				for(int K = 0; K < this.numSamples;K++){
-					dataBase[numSamples*I+K] =  tmp.imghash[K];
-				}
-	    	}catch(IOException i)
-			//unpack hashes
+	    	}catch(IOException i) { }
 		}
 	}
 
@@ -74,7 +70,6 @@ public class ImageSampler{
 			float[] kernal =  ImageHasher.gassianKernel(kernalHalfWidths[I], kernalVariance[I]);
            
             //ToDo:add nessary code to allow Window function to start at intermediate points. 
-            //System.out.println("line90-"+cardHypothesisData.length+" "+cardHypothesisData[0].length+" "+(grayScaleImage.getHeight() - boxWidth));//DEBUG
             for(int J = 0; J<img.getWidth()-boxWidth; J+=deltaX[I]){// for the length of the image
                 for(int K = 0; K<img.getHeight()-boxWidth; K+=deltaY[I]){// for the height of the  image
             
@@ -84,13 +79,11 @@ public class ImageSampler{
 
 					signitureCovariance = new float[numCards*this.numSamples];
                     for(int L = 0; L< this.numSamples*numCards; L++){//compare sample with all other signitures
-                        signitureCovariance[L] = signatureCompare(histogram, dataBase[L]);//differance in eqilized histograms
-						//System.out.print(java.util.Arrays.toString(signitureCovariance));//DEBUG
+                        signitureCovariance[L] = signatureCompare(histogram, cardData[L/this.numCards].imgHash[L%this.numSamples);//differance in eqilized histograms
                     }
-					//System.out.println("line103-J:"+J+"K:"+K);//DEBUG
 					cardHypothesisData[J/deltaX[I]][K/deltaY[I]] = signitureCovariance;
                 }  
-  
+  	
             }    
         
         
