@@ -14,7 +14,7 @@ public class ImageSampler{
 //compare with data base
 
 //FunFact:The aspect ratio of a magic card is 5:7(2.5'' x 3.5'')
-	public static String DATA_SRC = "data/";
+	public static String DATA_SRC = "data";
 	public int[] kernalHalfWidths = {75};
 	public float[] kernalVariance = {40};
 	public int deltaX[] = {10};
@@ -42,24 +42,20 @@ public class ImageSampler{
 
 		//load Cards and build database
 		for(int I = 0; I < numCards; I++){
-			
-		try{
-        	FileInputStream fileIn = new FileInputStream(DATA_SRC+I+".ser");
-        	ObjectInputStream in = new ObjectInputStream(fileIn);
-        	e = (CardData) in.readObject();
-    		in.close();
-        	fileIn.close();
-    	}catch(IOException i)
-      
-			float[][] tmp = HistogramImageHash.prosses(img);
+			try{
+	        	FileInputStream fileIn = new FileInputStream(DATA_SRC+"/"+I+".ser");
+	        	ObjectInputStream in = new ObjectInputStream(fileIn);
+	        	cardData = (CardData) in.readObject();
+	    		in.close();
+	        	fileIn.close();
+	        	
+				for(int K = 0; K < this.numSamples;K++){
+					dataBase[numSamples*I+K] =  tmp.imghash[K];
+				}
+	    	}catch(IOException i)
 			//unpack hashes
-			for(int K = 0; K < this.numSamples;K++){
-				dataBase[numSamples*I+K] =  tmp[K];
-			}
 		}
 	}
-	
-	public void serializeData()
 
 
     //box portions of the screen to build the chd(card hypothesis data)
