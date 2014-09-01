@@ -44,7 +44,7 @@ public class ImageSampler{
 		//load Cards and build database
 		for(int I = 0; I < numCards; I++){
 			try{
-	        	FileInputStream fileIn = new FileInputStream(DATA_SRC+"/"+I+".ser");
+	        	FileInputStream fileIn = new FileInputStream(DATA_SRC+java.io.File.separator+I+".ser");
 	        	ObjectInputStream in = new ObjectInputStream(fileIn);
 	        	cardData[I] = (CardData) in.readObject();
 	    		in.close();
@@ -79,7 +79,7 @@ public class ImageSampler{
 
 					signitureCovariance = new float[numCards*this.numSamples];
                     for(int L = 0; L< this.numSamples*numCards; L++){//compare sample with all other signitures
-                        signitureCovariance[L] = signatureCompare(histogram, cardData[L/this.numCards].imgHash[L%this.numSamples);//differance in eqilized histograms
+                        signitureCovariance[L] = signatureCompare(histogram, cardData[L/this.numCards].imgHash[L%this.numSamples]);//differance in eqilized histograms
                     }
 					cardHypothesisData[J/deltaX[I]][K/deltaY[I]] = signitureCovariance;
                 }  
@@ -103,7 +103,6 @@ public class ImageSampler{
                         
                         for(int M = 0; M < projectionSamplerWidth; M++){ // for windowX
                             for(int N = 0; N < projectionSamplerWidth; N++){//for windowY
-								//System.out.println("line126:"+(J+M)+" "+(K+N)+" "+L);//DEBUG
                                 localScore +=cardHypothesisData[J+M][K+N][L];       //acumlate sum of hypotiss
                             } 
                         }
@@ -124,7 +123,7 @@ public class ImageSampler{
                 	histogram[projections[J][K]/this.numSamples]++;//divide by number of samples
 				}
             }
-			//System.out.println(java.util.Arrays.toString(histogram));//DEBUG
+            
             //determin print order
             int[] outputOrder = new int[numCards];
             int index = 0;
@@ -140,7 +139,7 @@ public class ImageSampler{
             
             //print results
             for(int J = 0; J < numberOfOutputs; J++)
-                System.out.println(cardNames[outputOrder[numCards-1-J]]+":"+histogram[outputOrder[numCards-1-J]]);
+                System.out.println(cardData[outputOrder[numCards-1-J]].name+":"+histogram[outputOrder[numCards-1-J]]);
         }
     }
     
@@ -174,4 +173,3 @@ public class ImageSampler{
 		return 1-runningSum/arg1.length;
 	}			
 }
- 
