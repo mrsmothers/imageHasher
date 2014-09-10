@@ -5,7 +5,7 @@ import java.util.*;
 public class HistogramImageHash{
 	/* obtaines three image histograms (top, mid, bot) with a gassian weighting */
 
-
+ 
     public static float[][] prosses(BufferedImage img){
 		float out[][] = new float[3][256];
 		BufferedImage gradient = ImageGradient.prosses(img);
