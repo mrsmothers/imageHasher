@@ -3,6 +3,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class HistogramImageHash{
+	/* obtaines three image histograms (top, mid, bot) with a gassian weighting */
 
 
     public static float[][] prosses(BufferedImage img){
