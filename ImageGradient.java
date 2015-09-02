@@ -7,6 +7,8 @@ import java.io.*;
 import javax.imageio.* ;
 import java.awt.image.ConvolveOp;
 
+/* this class produce an image gradiant of na imge with two similer prosses. SObel and the cross method*/
+
 public class ImageGradient{
     private final static float[] xSobel = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};
     private final static float[] ySobel = {1, 2, 1, 0, 0, 0, -1, -2, -1};
