@@ -7,27 +7,28 @@ import java.io.*;
 import javax.imageio.* ;
 import java.awt.image.ConvolveOp;
 
-/* this class produce an image gradiant of na imge with two similer prosses. SObel and the cross method*/
+
 
 public class ImageGradient{
-    private final static float[] xSobel = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};
+    private final static float[] xSobel = {-1, 0 , 1, -2, 0, 2, -1, 0, 1};//3x3 mask arrays
     private final static float[] ySobel = {1, 2, 1, 0, 0, 0, -1, -2, -1};
-
-	private final static float[] cross1 = {1, 0, 0, -1};
-	private final static float[] cross2 = {0, 1, -1, 0};
+    
+    private final static float[] cross1 = {1, 0, 0, -1};//2x2 mask arrays
+    private final static float[] cross2 = {0, 1, -1, 0};
 
     public static BufferedImage prosses(BufferedImage img){
-        int[][] xGradient, yGradient;
         BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
         
-        BufferedImage im = IntensityMap.remap(img);
+        BufferedImage im = IntensityMap.remap(img);//create input image gray scale
         
         
-        for(int I = 0; I<im.getWidth()-2; I++){
+        for(int I = 0; I<im.getWidth()-2; I++){    //itterate through all the pixles of the image
             for(int J = 0; J<im.getHeight()-2; J++){
+            	
                 int a , b , n;
-                a =(int) mask(im, I, J, xSobel, 3);
-                b =(int) mask(im, I, J, ySobel, 3);
+                a =(int) mask(im, I, J, xSobel, 3);//dy
+                b =(int) mask(im, I, J, ySobel, 3);//dx
+                
                 n = (int)(Math.pow(Math.pow(a, 2) + Math.pow(b, 2), .5));//sqrt(a^2+b^2)
                 
                 if(n>255) n = 255;
@@ -81,7 +82,7 @@ public class ImageGradient{
     //applys a wndow funtion to a portion of an image
     //a weighted summation of the red band is perfomed
     
-    public static float mask(BufferedImage img, int x0, int y0, float[] bla, int width){
+  ubli  pc static float mask(BufferedImage img, int x0, int y0, float[] bla, int width){
     	int index = 0;
     	float out =0;
     	
@@ -101,7 +102,7 @@ public class ImageGradient{
     return out;
   }    
 
-    public static BufferedImage openImageFile(String fileName){
+    private static BufferedImage openImageFile(String fileName){
        BufferedImage img = null;
        
        try {
@@ -112,7 +113,7 @@ public class ImageGradient{
        
   }
   
-    public static void saveImageFile(BufferedImage img, String fileName){
+    private static void saveImageFile(BufferedImage img, String fileName){
       try {
        	File outputfile = new File(fileName);
 	       ImageIO.write(img, "png", outputfile);
