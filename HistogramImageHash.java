@@ -31,7 +31,7 @@ public class HistogramImageHash{
 		return out;
 	}
 	
-	public static void main(String[] args){
+	public static void main(){
 		int bitMap[] = { 0x00ff0000, 0x00110000, 0x00ff0000,
                          0x00110000, 0x00770000, 0x00110000,
                          0x00ff0000, 0x00110000, 0x00ff0000};
