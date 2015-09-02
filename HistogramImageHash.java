@@ -10,6 +10,7 @@ public class HistogramImageHash{
 		float out[][] = new float[3][256];
 		BufferedImage gradient = ImageGradient.prosses(img);
 		
+		//set width using the input image
 		int kernalHalfWidth = (img.getWidth()-1)/2;
 		int kernalWidth = kernalHalfWidth*2+1;
 		
@@ -24,7 +25,9 @@ public class HistogramImageHash{
 				kernalIndex++;
 			}
 		}
+		
 		System.out.println(Arrays.toString(kernal));
+		
 		return out;
 	}
 	
